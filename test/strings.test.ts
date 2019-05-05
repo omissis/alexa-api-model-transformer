@@ -1,16 +1,4 @@
-import * as str from '../../src/lang/strings';
-
-describe("indent", () => {
-  it("should print 4 spaces for 1 indent level", () => {
-    expect(str.indent(1)).toBe('    ')
-  })
-  it("should print 8 spaces for 2 indent level", () => {
-    expect(str.indent(2)).toBe('        ')
-  })
-  it("should print 12 spaces for 3 indent level", () => {
-    expect(str.indent(3)).toBe('            ')
-  })
-})
+import * as str from '../src/strings';
 
 describe("ltrim", () => {
   it("replaces space characters at the beginning of a string", () => {

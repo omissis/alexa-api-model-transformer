@@ -1,7 +1,10 @@
 import * as ts from 'typescript'
+import fs from 'fs'
+import path from 'path'
 import { DestinationFile } from './file';
 import Visitor from './visitor';
 import PhpVisitor from './php/visitor';
+import ParseTool from './parse_tool';
 
 export default class Explorer {
   private visitor: Visitor
@@ -10,10 +13,8 @@ export default class Explorer {
     this.visitor = visitor
   }
 
-  static php(): Explorer {
-    return new Explorer(
-      new PhpVisitor('Omissis\\AlexaSdk\\Model', '/tmp')
-    )
+  static php(parseTool: ParseTool): Explorer {
+    return new Explorer(new PhpVisitor(parseTool, 'pkg'))
   }
 
   explore(source: ts.SourceFile): Array<DestinationFile> {
@@ -21,7 +22,7 @@ export default class Explorer {
 
     let files: Array<DestinationFile> = []
 
-    ts.forEachChild(source, (node: ts.Node) => {
+    ts.forEachChild(source, (node: ts.Node): void => {
       if (ts.isInterfaceDeclaration(node)) {
         files.push(self.visitor.visitInterface(node))
         return
@@ -31,13 +32,19 @@ export default class Explorer {
         files.push(self.visitor.visitTypeAlias(node))
         return
       }
-
       if (ts.isModuleDeclaration(node)) {
-        files.push(self.visitor.visitModule(node))
+        files = files.concat(self.visitor.visitModule(node))
         return
       }
     })
 
-    return files
+    return files.filter((file: DestinationFile): boolean => !file.isEmpty())
+  }
+
+  dump(source: ts.SourceFile): void {
+    this.explore(source).forEach((file: DestinationFile): void => {
+      fs.mkdirSync(path.dirname(file.path), { recursive: true } as any)
+      fs.writeFileSync(file.path, file.content)
+    })
   }
 }

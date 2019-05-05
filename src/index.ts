@@ -1,9 +1,9 @@
-import * as ts from 'typescript'
 import Explorer from './ast/explorer';
+import ParseTool from './ast/parse_tool';
 
-const modelsFilePath = './node_modules/alexa-apis-for-nodejs/ask-sdk-model/index.ts'
-// const modelsFilePath = './test/ast/explorer.test/empty.ts'
-const source = ts.createProgram([modelsFilePath], {}).getSourceFile(modelsFilePath)
-const explorer = Explorer.php()
+const namespace = 'Omissis\\AlexaSdk\\Model'
+const modelsFilePath = 'node_modules/alexa-apis-for-nodejs/ask-sdk-model/index.ts'
+const parseTool = new ParseTool(modelsFilePath, namespace)
+const explorer = Explorer.php(parseTool)
 
-explorer.explore(source)
+explorer.dump(parseTool.sourceFile)

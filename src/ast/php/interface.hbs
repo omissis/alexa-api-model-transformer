@@ -6,19 +6,22 @@ namespace {{namespace}};
 
 final class {{name}} implements JsonSerializable
 {
-    {{#each properties}}
+    {{#each items}}
     /**
-     * @var {{this.type}}
+     * @var {{this.type.doc}}
      */
     private ${{this.name}};
+    {{#unless @last}}
+
+    {{/unless}}
     {{/each}}
 
     public function __construct(
-        {{#each properties}}
-        ?{{this.type}} ${{this.name}}
+        {{#each items}}
+        {{this.type.code}} ${{this.name}}{{#unless @last}},{{/unless}}
         {{/each}}
     ) {
-        {{#each properties}}
+        {{#each items}}
         $this->{{this.name}} = ${{this.name}};
         {{/each}}
     }
@@ -26,7 +29,7 @@ final class {{name}} implements JsonSerializable
     public function jsonSerialize()
     {
         return [
-            {{#each properties}}
+            {{#each items}}
             '{{this.name}}' => $this->{{this.name}},
             {{/each}}
         ];
@@ -37,16 +40,19 @@ final class {{name}} implements JsonSerializable
         $decoded = json_decode($json, true);
 
         return new self(
-            {{#each properties}}
-            $decoded['{{this.name}}'] ?? null,
+            {{#each items}}
+            $decoded['{{this.name}}'] ?? null{{#unless @last}},{{/unless}}
             {{/each}}
         );
     }
 
-    {{#each properties}}
-    public function {{this.name}}(): {{this.type}}
+    {{#each items}}
+    public function {{this.name}}(){{#if this.type.code.length}}: {{this.type.code}}{{/if}}
     {
         return $this->{{this.name}};
     }
+    {{#unless @last}}
+
+    {{/unless}}
     {{/each}}
 }

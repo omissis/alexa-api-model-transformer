@@ -9,13 +9,14 @@
   "author": "Claudio Beatrice",
   "license": "MIT",
   "scripts": {
-    "dump": "tsc && node dist/index.js",
+    "dump": "tsc && copyfiles --up 1 src/**/*.hbs dist/ && node dist/index.js",
     "test": "jest --forceExit --coverage --verbose",
     "watch-test": "npm run test -- --watchAll",
     "build": "tsc",
     "watch": "tsc -w",
     "lint": "tslint -c tslint.json -p tsconfig.json",
-    "clean": "rm dist/*"
+    "clean": "rm -rf dist/* pkg/*",
+    "php-lint": "find pkg -type f -name *.php -exec php -l {} \\;"
   },
   "dependencies": {},
   "devDependencies": {
@@ -23,6 +24,7 @@
     "@types/node": "^9.4.6",
     "alexa-apis-for-nodejs": "alexa/alexa-apis-for-nodejs",
     "chai": "^4.1.2",
+    "copyfiles": "^2.1.0",
     "handlebars": "^4.1.2",
     "jest": "^22.0.4",
     "ts-jest": "^22.0.4",
