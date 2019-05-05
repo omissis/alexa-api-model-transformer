@@ -74,7 +74,7 @@ export default class PhpVisitor implements Visitor {
       return new DestinationFile(`${this.outputDir}/${namespaceDir}/${node.name.escapedText}.php`, fileContent)
     }
 
-    const types = this.parseTool.typeAliasTypes(node, namespace)
+    const types = this.parseTool.typeAliasTypes(node)
     if (types.length > 0) {
       return destinationFile('type_alias_types', types)
     }

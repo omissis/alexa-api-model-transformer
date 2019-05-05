@@ -55,7 +55,7 @@ export default class ParseTool {
     }).filter(value => typeof value != 'undefined')
   }
 
-  typeAliasTypes(node: ts.TypeAliasDeclaration, namespace?: string): Array<string> {
+  typeAliasTypes(node: ts.TypeAliasDeclaration): Array<string> {
     if (!ts.isUnionTypeNode(node.type)) {
       return []
     }
