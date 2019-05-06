@@ -1,7 +1,19 @@
 import * as ts from 'typescript'
 
-export const isTypeScriptKeyWord = (node: ts.Node): boolean  => {
-  const typeKeywords = ['AnyKeyword', 'NumberKeyword', 'ObjectKeyword', 'BooleanKeyword', 'StringKeyword', 'SymbolKeyword', 'ThisKeyword', 'VoidKeyword', 'UndefinedKeyword', 'NullKeyword', 'NeverKeyword']
+export const isTypeScriptKeyWord = (node: ts.Node): boolean => {
+  const typeKeywords = [
+    'AnyKeyword',
+    'NumberKeyword',
+    'ObjectKeyword',
+    'BooleanKeyword',
+    'StringKeyword',
+    'SymbolKeyword',
+    'ThisKeyword',
+    'VoidKeyword',
+    'UndefinedKeyword',
+    'NullKeyword',
+    'NeverKeyword',
+  ]
 
   return typeKeywords.indexOf(nodeKindName(node)) !== -1
 }

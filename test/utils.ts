@@ -37,7 +37,6 @@ export const getModuleDeclarations = (source: ts.SourceFile): Array<ts.ModuleDec
   return moduleDeclarations
 }
 
-
 export function destination(path: string): string {
   return fs.readFileSync(path).toString()
 }

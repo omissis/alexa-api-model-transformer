@@ -1,7 +1,7 @@
-import { DestinationFile } from '../../src/ast/file';
+import { DestinationFile } from '../../src/ast/file'
 
-describe("AST Destination File", () => {
-  it("has path and content", () => {
+describe('AST Destination File', () => {
+  it('has path and content', () => {
     const file = new DestinationFile('/tmp/foobar.php', '<?php echo "Hello, World!";')
 
     expect(file.path).toBe('/tmp/foobar.php')

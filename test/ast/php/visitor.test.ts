@@ -1,16 +1,16 @@
-import PhpVisitor from "../../../src/ast/php/visitor";
-import * as test from '../../utils';
-import { DestinationFile } from '../../../src/ast/file';
-import ParseTool from '../../../src/ast/parse_tool';
+import PhpVisitor from '../../../src/ast/php/visitor'
+import * as test from '../../utils'
+import { DestinationFile } from '../../../src/ast/file'
+import ParseTool from '../../../src/ast/parse_tool'
 
 const namespace = 'Omissis\\AlexaSdk\\Model'
 
-describe("AST PHP Visitor", () => {
-  it("should exist", () => {
+describe('AST PHP Visitor', () => {
+  it('should exist', () => {
     return expect(PhpVisitor).not.toBe(undefined)
   })
 
-  it("should visit an interface", () => {
+  it('should visit an interface', () => {
     const parseTool = new ParseTool(`${__dirname}/visitor.test/interface.ts`, namespace)
     const visitor = new PhpVisitor(parseTool, '/tmp')
     const interfaceDeclaration = test.getInterfaceDeclarations(parseTool.sourceFile)[0]
@@ -23,7 +23,7 @@ describe("AST PHP Visitor", () => {
     )
   })
 
-  it("should visit type aliases", () => {
+  it('should visit type aliases', () => {
     const parseTool = new ParseTool(`${__dirname}/visitor.test/type_aliases.ts`, namespace)
     const visitor = new PhpVisitor(parseTool, '/var/tmp')
     const typeAliasDeclarations = test.getTypeAliasDeclarations(parseTool.sourceFile)
@@ -43,7 +43,7 @@ describe("AST PHP Visitor", () => {
     )
   })
 
-  it("should visit modules", () => {
+  it('should visit modules', () => {
     const parseTool = new ParseTool(`${__dirname}/visitor.test/module.ts`, namespace)
     const visitor = new PhpVisitor(parseTool, '/tmp')
     const moduleDeclaration = test.getModuleDeclarations(parseTool.sourceFile)[0]
@@ -56,7 +56,7 @@ describe("AST PHP Visitor", () => {
       new DestinationFile(
         '/tmp/Omissis/AlexaSdk/Model/Foo/Bar/Baz2.php',
         test.destination(`${__dirname}/visitor.test/module_2.php`)
-      )
+      ),
     ])
   })
-});
+})

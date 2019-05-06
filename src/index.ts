@@ -1,5 +1,5 @@
-import Explorer from './ast/explorer';
-import ParseTool from './ast/parse_tool';
+import Explorer from './ast/explorer'
+import ParseTool from './ast/parse_tool'
 
 const namespace = 'Omissis\\AlexaSdk\\Model'
 const modelsFilePath = 'node_modules/alexa-apis-for-nodejs/ask-sdk-model/index.ts'

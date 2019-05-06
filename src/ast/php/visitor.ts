@@ -1,10 +1,10 @@
 import fs from 'fs'
 import * as ts from 'typescript'
-import * as str from '../../strings';
-import { DestinationFile } from '../file';
-import Visitor from '../visitor';
+import * as str from '../../strings'
+import { DestinationFile } from '../file'
+import Visitor from '../visitor'
 import handlebars from 'handlebars'
-import ParseTool from '../parse_tool';
+import ParseTool from '../parse_tool'
 
 export default class PhpVisitor implements Visitor {
   private parseTool: ParseTool
@@ -17,9 +17,9 @@ export default class PhpVisitor implements Visitor {
   }
   visitModule(node: ts.ModuleDeclaration): Array<DestinationFile> {
     const self = this
-    let files: Array<DestinationFile> = []
+    const files: Array<DestinationFile> = []
+    const partialNamespace: Array<string> = []
     let curNode: ts.Node = node
-    let partialNamespace: Array<string> = []
 
     while (ts.isModuleDeclaration(curNode)) {
       if (ts.isIdentifier(curNode.name)) {
@@ -47,13 +47,13 @@ export default class PhpVisitor implements Visitor {
 
   visitInterface(node: ts.InterfaceDeclaration, namespace?: string): DestinationFile {
     const fullNamespace = this.parseTool.baseNamespace + (!!namespace ? '\\' + namespace : '')
-    const namespaceDir = fullNamespace.replace(/^\\/, '').replace(/\\/g, '\/')
+    const namespaceDir = fullNamespace.replace(/^\\/, '').replace(/\\/g, '/')
     const template = handlebars.compile(fs.readFileSync(`${__dirname}/interface.hbs`).toString())
 
     const fileContent = template({
       namespace: fullNamespace,
       name: node.name.escapedText,
-      items: this.parseTool.interfaceProperties(node)
+      items: this.parseTool.interfaceProperties(node),
     })
 
     return new DestinationFile(`${this.outputDir}/${namespaceDir}/${node.name.escapedText}.php`, fileContent)
@@ -61,14 +61,14 @@ export default class PhpVisitor implements Visitor {
 
   visitTypeAlias(node: ts.TypeAliasDeclaration, namespace?: string): DestinationFile {
     const fullNamespace = this.parseTool.baseNamespace + (!!namespace ? '\\' + namespace : '')
-    const namespaceDir = fullNamespace.replace(/^\\/, '').replace(/\\/g, '\/')
-    const destinationFile = (templateName: string, items: Array<string|number>): DestinationFile => {
+    const namespaceDir = fullNamespace.replace(/^\\/, '').replace(/\\/g, '/')
+    const destinationFile = (templateName: string, items: Array<string | number>): DestinationFile => {
       const template = handlebars.compile(fs.readFileSync(`${__dirname}/${templateName}.hbs`).toString())
 
       const fileContent = template({
         namespace: fullNamespace,
         name: node.name.escapedText,
-        items: items
+        items: items,
       })
 
       return new DestinationFile(`${this.outputDir}/${namespaceDir}/${node.name.escapedText}.php`, fileContent)

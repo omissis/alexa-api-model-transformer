@@ -27,14 +27,17 @@ export class Type {
   readonly doc: string
 
   static fromEntityName(namespace: string, entityName: ts.EntityName, sourceFile: ts.SourceFile): Type {
-    const trimmedType = str.trim(entityName.getText(sourceFile), '\'')
+    const trimmedType = str.trim(entityName.getText(sourceFile), "'")
     const phpType = typeToNativePhpType(trimmedType)
 
     if (phpType) return new Type(phpType)
 
     return new Type(
       (!!namespace ? '\\' + namespace + '\\' : '') +
-      trimmedType.split('.').map((word) => word.charAt(0).toUpperCase() + word.substring(1)).join('\\')
+        trimmedType
+          .split('.')
+          .map(word => word.charAt(0).toUpperCase() + word.substring(1))
+          .join('\\')
     )
   }
 
@@ -48,12 +51,13 @@ export class Type {
       if (ts.isTypeReferenceNode(node)) {
         if (ts.isIdentifier(node.typeName)) {
           const typeNameAsString = node.typeName.escapedText.toString()
-          type = typeToNativePhpType(typeNameAsString) || (!!namespace ? '\\' + namespace + '\\' : '') + typeNameAsString
+          type =
+            typeToNativePhpType(typeNameAsString) || (!!namespace ? '\\' + namespace + '\\' : '') + typeNameAsString
           return
         }
 
         if (ts.isQualifiedName(node.typeName)) {
-          type = (!!namespace ? ('\\' + namespace + '\\') : '') + qualifiedNameToPhpType(node.typeName)
+          type = (!!namespace ? '\\' + namespace + '\\' : '') + qualifiedNameToPhpType(node.typeName)
           return
         }
       }
@@ -74,15 +78,13 @@ export class Type {
 }
 
 export const typeElementPhpName = (el: ts.TypeElement): string => {
-  const phpify = (name: string) => str.trim(name, '\'')
-    .split('.')
-    .map((word, i) => (
-      i === 0
-      ? word.charAt(0).toLowerCase()
-      : word.charAt(0).toUpperCase()) + word.substring(1)
-    )
-    .map((word) => (word.replace(/[\W]+/g, '')))
-    .join('')
+  const phpify = (name: string) =>
+    str
+      .trim(name, "'")
+      .split('.')
+      .map((word, i) => (i === 0 ? word.charAt(0).toLowerCase() : word.charAt(0).toUpperCase()) + word.substring(1))
+      .map(word => word.replace(/[\W]+/g, ''))
+      .join('')
 
   if (ts.isStringLiteral(el.name)) return phpify(el.name.text.toString())
   if (ts.isNumericLiteral(el.name)) return phpify(el.name.text.toString())
@@ -117,14 +119,13 @@ const keywordToPhpType = (keyword: string): string => {
   }
 
   if (keyword === 'TypeReference') {
-
   }
 
   return 'mixed'
 }
 
 const typeToNativePhpType = (type: string): string => {
-  const normType = str.trim(type.toLowerCase(), '\'')
+  const normType = str.trim(type.toLowerCase(), "'")
 
   if (normType === 'string') return 'string'
   if (normType === 'boolean') return 'bool'
@@ -137,7 +138,8 @@ const typeToNativePhpType = (type: string): string => {
 }
 
 const qualifiedNameToPhpType = (qualifiedName: ts.QualifiedName): string => {
-  let left = '', right = ''
+  let left = '',
+    right = ''
 
   if (ts.isQualifiedName(qualifiedName.left)) {
     left += '\\' + str.capitalize(qualifiedNameToPhpType(qualifiedName.left))

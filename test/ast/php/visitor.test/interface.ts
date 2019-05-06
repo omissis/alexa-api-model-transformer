@@ -9,9 +9,9 @@ interface FooBar {
 
   readonly corge: BazQuux
 
-  slots?: { [key: string]: BazQuux; };
+  slots?: { [key: string]: BazQuux }
 
-  'Foo.Bar.Baz': foo.bar.Baz;
+  'Foo.Bar.Baz': foo.bar.Baz
 
   foobar(): number
 }
