@@ -1,23 +1,23 @@
 interface FooBar {
-  readonly foo: string;
+  readonly foo: string
 
-  readonly bar: number;
+  readonly bar: number
 
-  readonly baz: boolean;
+  readonly baz: boolean
 
-  readonly quux: Array<unknown>;
+  readonly quux: Array<unknown>
 
-  readonly corge: BazQuux;
+  readonly corge: BazQuux
 
-  slots?: { [key: string]: BazQuux };
+  slots?: { [key: string]: BazQuux }
 
-  'Foo.Bar.Baz': foo.bar.Baz;
+  'Foo.Bar.Baz': foo.bar.Baz
 
-  foobar(): number;
+  foobar(): number
 }
 
 interface BazQuux {
-  test: string;
+  test: string
 }
 
 namespace foo.bar {

@@ -1,29 +1,29 @@
-import * as ts from 'typescript';
-import * as tsh from './ts/helpers';
-import * as php from './php/types';
-import * as str from '../strings';
+import * as ts from 'typescript'
+import * as tsh from './ts/helpers'
+import * as php from './php/types'
+import * as str from '../strings'
 
 export default class ParseTool {
-  private modelsFilePath: string;
+  private modelsFilePath: string
 
-  readonly baseNamespace: string;
+  readonly baseNamespace: string
 
-  private program: ts.Program;
+  private program: ts.Program
 
-  readonly sourceFile: ts.SourceFile;
+  readonly sourceFile: ts.SourceFile
 
-  private typeFactory: php.TypeFactory;
+  private typeFactory: php.TypeFactory
 
   constructor(modelsFilePath: string, namespace: string) {
-    this.modelsFilePath = modelsFilePath;
+    this.modelsFilePath = modelsFilePath
 
-    this.baseNamespace = namespace;
+    this.baseNamespace = namespace
 
-    this.program = ts.createProgram([modelsFilePath], {});
+    this.program = ts.createProgram([modelsFilePath], {})
 
-    this.sourceFile = this.program.getSourceFile(this.modelsFilePath);
+    this.sourceFile = this.program.getSourceFile(this.modelsFilePath)
 
-    this.typeFactory = new php.TypeFactory(this.baseNamespace, this.sourceFile);
+    this.typeFactory = new php.TypeFactory(this.baseNamespace, this.sourceFile)
   }
 
   interfaceProperties(
@@ -36,15 +36,15 @@ export default class ParseTool {
         name: php.typeElementPhpName(member),
         type: this.typeFactory.fromTypeElement(member),
       })
-    );
+    )
   }
 
   typeAliasLiterals(node: ts.TypeAliasDeclaration): Array<string | number> {
     if (!ts.isUnionTypeNode(node.type)) {
-      return [];
+      return []
     }
 
-    const self = this;
+    const self = this
 
     return node.type.types
       .map(
@@ -53,34 +53,34 @@ export default class ParseTool {
             const value = str.trim(
               type.literal.getFullText(self.sourceFile),
               ' \t\n'
-            );
+            )
 
             if (ts.isNumericLiteral(type.literal)) {
-              return parseFloat(value);
+              return parseFloat(value)
             }
 
-            return value;
+            return value
           }
         }
       )
-      .filter(value => typeof value != 'undefined');
+      .filter(value => typeof value != 'undefined')
   }
 
   typeAliasTypes(node: ts.TypeAliasDeclaration): Array<string> {
     if (!ts.isUnionTypeNode(node.type)) {
-      return [];
+      return []
     }
 
-    const self = this;
+    const self = this
 
     return node.type.types
       .map(
         (type: ts.TypeNode): string => {
           if (ts.isTypeReferenceNode(type)) {
-            return self.typeFactory.fromEntityName(type.typeName).code;
+            return self.typeFactory.fromEntityName(type.typeName).code
           }
         }
       )
-      .filter(value => typeof value != 'undefined');
+      .filter(value => typeof value != 'undefined')
   }
 }
