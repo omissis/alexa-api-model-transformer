@@ -26,11 +26,7 @@ export class Type {
 
   readonly doc: string
 
-  static fromEntityName(
-    namespace: string,
-    entityName: ts.EntityName,
-    sourceFile: ts.SourceFile
-  ): Type {
+  static fromEntityName(namespace: string, entityName: ts.EntityName, sourceFile: ts.SourceFile): Type {
     const trimmedType = str.trim(entityName.getText(sourceFile), "'")
     const phpType = typeToNativePhpType(trimmedType)
 
@@ -56,15 +52,12 @@ export class Type {
         if (ts.isIdentifier(node.typeName)) {
           const typeNameAsString = node.typeName.escapedText.toString()
           type =
-            typeToNativePhpType(typeNameAsString) ||
-            (!!namespace ? '\\' + namespace + '\\' : '') + typeNameAsString
+            typeToNativePhpType(typeNameAsString) || (!!namespace ? '\\' + namespace + '\\' : '') + typeNameAsString
           return
         }
 
         if (ts.isQualifiedName(node.typeName)) {
-          type =
-            (!!namespace ? '\\' + namespace + '\\' : '') +
-            qualifiedNameToPhpType(node.typeName)
+          type = (!!namespace ? '\\' + namespace + '\\' : '') + qualifiedNameToPhpType(node.typeName)
           return
         }
       }
@@ -89,12 +82,7 @@ export const typeElementPhpName = (el: ts.TypeElement): string => {
     str
       .trim(name, "'")
       .split('.')
-      .map(
-        (word, i) =>
-          (i === 0
-            ? word.charAt(0).toLowerCase()
-            : word.charAt(0).toUpperCase()) + word.substring(1)
-      )
+      .map((word, i) => (i === 0 ? word.charAt(0).toLowerCase() : word.charAt(0).toUpperCase()) + word.substring(1))
       .map(word => word.replace(/[\W]+/g, ''))
       .join('')
 

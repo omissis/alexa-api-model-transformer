@@ -1,9 +1,7 @@
 import fs from 'fs'
 import * as ts from 'typescript'
 
-export const getInterfaceDeclarations = (
-  source: ts.SourceFile
-): Array<ts.InterfaceDeclaration> => {
+export const getInterfaceDeclarations = (source: ts.SourceFile): Array<ts.InterfaceDeclaration> => {
   let interfaceDeclarations: Array<ts.InterfaceDeclaration> = []
 
   ts.forEachChild(source, (node: ts.Node) => {
@@ -15,9 +13,7 @@ export const getInterfaceDeclarations = (
   return interfaceDeclarations
 }
 
-export const getTypeAliasDeclarations = (
-  source: ts.SourceFile
-): Array<ts.TypeAliasDeclaration> => {
+export const getTypeAliasDeclarations = (source: ts.SourceFile): Array<ts.TypeAliasDeclaration> => {
   let typeAliasDeclarations: Array<ts.TypeAliasDeclaration> = []
 
   ts.forEachChild(source, (node: ts.Node) => {
@@ -29,9 +25,7 @@ export const getTypeAliasDeclarations = (
   return typeAliasDeclarations
 }
 
-export const getModuleDeclarations = (
-  source: ts.SourceFile
-): Array<ts.ModuleDeclaration> => {
+export const getModuleDeclarations = (source: ts.SourceFile): Array<ts.ModuleDeclaration> => {
   let moduleDeclarations: Array<ts.ModuleDeclaration> = []
 
   ts.forEachChild(source, (node: ts.Node) => {

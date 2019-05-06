@@ -31,15 +31,9 @@ describe('AST Explorer', () => {
 
     const VisitorMock = jest.fn<Visitor>().mockImplementation(() => {
       return {
-        visitModule: jest
-          .fn<Array<DestinationFile>>()
-          .mockImplementation(() => []),
-        visitInterface: jest
-          .fn<DestinationFile>()
-          .mockImplementation(() => DestinationFile.empty()),
-        visitTypeAlias: jest
-          .fn<DestinationFile>()
-          .mockImplementation(() => DestinationFile.empty()),
+        visitModule: jest.fn<Array<DestinationFile>>().mockImplementation(() => []),
+        visitInterface: jest.fn<DestinationFile>().mockImplementation(() => DestinationFile.empty()),
+        visitTypeAlias: jest.fn<DestinationFile>().mockImplementation(() => DestinationFile.empty()),
       }
     })
 
@@ -59,11 +53,9 @@ describe('AST Explorer', () => {
 
     const VisitorMock = jest.fn<Visitor>().mockImplementation(() => {
       return {
-        visitModule: jest
-          .fn<Array<DestinationFile>>()
-          .mockImplementation(() => {
-            return []
-          }),
+        visitModule: jest.fn<Array<DestinationFile>>().mockImplementation(() => {
+          return []
+        }),
         visitInterface: jest.fn<DestinationFile>().mockImplementation(() => {
           return new DestinationFile('/tmp/foo.php', '<?php // some code')
         }),
@@ -89,17 +81,12 @@ describe('AST Explorer', () => {
 
     const VisitorMock = jest.fn<Visitor>().mockImplementation(() => {
       return {
-        visitModule: jest
-          .fn<Array<DestinationFile>>()
-          .mockImplementation(() => {
-            return [
-              new DestinationFile('/tmp/foo/bar/baz.php', '<?php // some code'),
-              new DestinationFile(
-                '/tmp/foo/bar/quux.php',
-                '<?php // some code'
-              ),
-            ]
-          }),
+        visitModule: jest.fn<Array<DestinationFile>>().mockImplementation(() => {
+          return [
+            new DestinationFile('/tmp/foo/bar/baz.php', '<?php // some code'),
+            new DestinationFile('/tmp/foo/bar/quux.php', '<?php // some code'),
+          ]
+        }),
         visitInterface: jest.fn<DestinationFile>().mockImplementation(() => {
           DestinationFile.empty()
         }),
@@ -130,17 +117,12 @@ describe('AST Explorer', () => {
 
     const VisitorMock = jest.fn<Visitor>().mockImplementation(() => {
       return {
-        visitModule: jest
-          .fn<Array<DestinationFile>>()
-          .mockImplementation(() => {
-            return [
-              new DestinationFile('/tmp/foo/bar/baz.php', '<?php // some code'),
-              new DestinationFile(
-                '/tmp/foo/bar/quux.php',
-                '<?php // some more code'
-              ),
-            ]
-          }),
+        visitModule: jest.fn<Array<DestinationFile>>().mockImplementation(() => {
+          return [
+            new DestinationFile('/tmp/foo/bar/baz.php', '<?php // some code'),
+            new DestinationFile('/tmp/foo/bar/quux.php', '<?php // some more code'),
+          ]
+        }),
         visitInterface: jest.fn<DestinationFile>().mockImplementation(() => {
           DestinationFile.empty()
         }),
@@ -156,13 +138,7 @@ describe('AST Explorer', () => {
     explorer.dump(sourceFile)
 
     expect(fs.mkdirSync).toBeCalledWith('/tmp/foo/bar', { recursive: true })
-    expect(fs.writeFileSync).toBeCalledWith(
-      '/tmp/foo/bar/baz.php',
-      '<?php // some code'
-    )
-    expect(fs.writeFileSync).toBeCalledWith(
-      '/tmp/foo/bar/quux.php',
-      '<?php // some more code'
-    )
+    expect(fs.writeFileSync).toBeCalledWith('/tmp/foo/bar/baz.php', '<?php // some code')
+    expect(fs.writeFileSync).toBeCalledWith('/tmp/foo/bar/quux.php', '<?php // some more code')
   })
 })

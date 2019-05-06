@@ -26,13 +26,9 @@ export default class ParseTool {
     this.typeFactory = new php.TypeFactory(this.baseNamespace, this.sourceFile)
   }
 
-  interfaceProperties(
-    node: ts.InterfaceDeclaration
-  ): Array<{ name: string; type: { code: string; doc: string } }> {
+  interfaceProperties(node: ts.InterfaceDeclaration): Array<{ name: string; type: { code: string; doc: string } }> {
     return node.members.filter(tsh.isPropertySignature).map(
-      (
-        member: ts.TypeElement
-      ): { name: string; type: { code: string; doc: string } } => ({
+      (member: ts.TypeElement): { name: string; type: { code: string; doc: string } } => ({
         name: php.typeElementPhpName(member),
         type: this.typeFactory.fromTypeElement(member),
       })
@@ -50,10 +46,7 @@ export default class ParseTool {
       .map(
         (type: ts.TypeNode): string | number => {
           if (ts.isLiteralTypeNode(type)) {
-            const value = str.trim(
-              type.literal.getFullText(self.sourceFile),
-              ' \t\n'
-            )
+            const value = str.trim(type.literal.getFullText(self.sourceFile), ' \t\n')
 
             if (ts.isNumericLiteral(type.literal)) {
               return parseFloat(value)

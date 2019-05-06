@@ -11,14 +11,9 @@ describe('AST PHP Visitor', () => {
   })
 
   it('should visit an interface', () => {
-    const parseTool = new ParseTool(
-      `${__dirname}/visitor.test/interface.ts`,
-      namespace
-    )
+    const parseTool = new ParseTool(`${__dirname}/visitor.test/interface.ts`, namespace)
     const visitor = new PhpVisitor(parseTool, '/tmp')
-    const interfaceDeclaration = test.getInterfaceDeclarations(
-      parseTool.sourceFile
-    )[0]
+    const interfaceDeclaration = test.getInterfaceDeclarations(parseTool.sourceFile)[0]
 
     expect(visitor.visitInterface(interfaceDeclaration)).toEqual(
       new DestinationFile(
@@ -29,14 +24,9 @@ describe('AST PHP Visitor', () => {
   })
 
   it('should visit type aliases', () => {
-    const parseTool = new ParseTool(
-      `${__dirname}/visitor.test/type_aliases.ts`,
-      namespace
-    )
+    const parseTool = new ParseTool(`${__dirname}/visitor.test/type_aliases.ts`, namespace)
     const visitor = new PhpVisitor(parseTool, '/var/tmp')
-    const typeAliasDeclarations = test.getTypeAliasDeclarations(
-      parseTool.sourceFile
-    )
+    const typeAliasDeclarations = test.getTypeAliasDeclarations(parseTool.sourceFile)
 
     expect(visitor.visitTypeAlias(typeAliasDeclarations[0])).toEqual(
       new DestinationFile(
@@ -54,14 +44,9 @@ describe('AST PHP Visitor', () => {
   })
 
   it('should visit modules', () => {
-    const parseTool = new ParseTool(
-      `${__dirname}/visitor.test/module.ts`,
-      namespace
-    )
+    const parseTool = new ParseTool(`${__dirname}/visitor.test/module.ts`, namespace)
     const visitor = new PhpVisitor(parseTool, '/tmp')
-    const moduleDeclaration = test.getModuleDeclarations(
-      parseTool.sourceFile
-    )[0]
+    const moduleDeclaration = test.getModuleDeclarations(parseTool.sourceFile)[0]
 
     expect(visitor.visitModule(moduleDeclaration)).toEqual([
       new DestinationFile(
