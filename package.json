@@ -16,7 +16,8 @@
     "watch": "tsc -w",
     "lint": "tslint -c tslint.json -p tsconfig.json",
     "clean": "rm -rf dist/* pkg/*",
-    "php-lint": "find pkg -type f -name *.php -exec php -l {} \\;"
+    "php-lint": "find pkg -type f -name *.php -exec php -l {} \\;",
+    "pretty": "prettier --write src/**/*.ts test/**/*.ts"
   },
   "dependencies": {},
   "devDependencies": {
@@ -27,6 +28,7 @@
     "copyfiles": "^2.1.0",
     "handlebars": "^4.1.2",
     "jest": "^22.0.4",
+    "prettier": "1.17.0",
     "ts-jest": "^22.0.4",
     "ts-node": "^5.0.0",
     "tslint": "^5.9.1",
