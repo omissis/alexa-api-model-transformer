@@ -1,45 +1,50 @@
-import fs from 'fs'
-import * as ts from 'typescript'
+import fs from 'fs';
+import * as ts from 'typescript';
 
-export const getInterfaceDeclarations = (source: ts.SourceFile): Array<ts.InterfaceDeclaration> => {
-  let interfaceDeclarations: Array<ts.InterfaceDeclaration> = []
+export const getInterfaceDeclarations = (
+  source: ts.SourceFile
+): Array<ts.InterfaceDeclaration> => {
+  let interfaceDeclarations: Array<ts.InterfaceDeclaration> = [];
 
   ts.forEachChild(source, (node: ts.Node) => {
     if (ts.isInterfaceDeclaration(node)) {
-      interfaceDeclarations.push(node)
+      interfaceDeclarations.push(node);
     }
-  })
+  });
 
-  return interfaceDeclarations
-}
+  return interfaceDeclarations;
+};
 
-export const getTypeAliasDeclarations = (source: ts.SourceFile): Array<ts.TypeAliasDeclaration> => {
-  let typeAliasDeclarations: Array<ts.TypeAliasDeclaration> = []
+export const getTypeAliasDeclarations = (
+  source: ts.SourceFile
+): Array<ts.TypeAliasDeclaration> => {
+  let typeAliasDeclarations: Array<ts.TypeAliasDeclaration> = [];
 
   ts.forEachChild(source, (node: ts.Node) => {
     if (ts.isTypeAliasDeclaration(node)) {
-      typeAliasDeclarations.push(node)
+      typeAliasDeclarations.push(node);
     }
-  })
+  });
 
-  return typeAliasDeclarations
-}
+  return typeAliasDeclarations;
+};
 
-export const getModuleDeclarations = (source: ts.SourceFile): Array<ts.ModuleDeclaration> => {
-  let moduleDeclarations: Array<ts.ModuleDeclaration> = []
+export const getModuleDeclarations = (
+  source: ts.SourceFile
+): Array<ts.ModuleDeclaration> => {
+  let moduleDeclarations: Array<ts.ModuleDeclaration> = [];
 
   ts.forEachChild(source, (node: ts.Node) => {
     if (ts.isModuleDeclaration(node)) {
-      moduleDeclarations.push(node)
+      moduleDeclarations.push(node);
     }
-  })
+  });
 
-  return moduleDeclarations
-}
-
+  return moduleDeclarations;
+};
 
 export function destination(path: string): string {
-  return fs.readFileSync(path).toString()
+  return fs.readFileSync(path).toString();
 }
 
-export default undefined
+export default undefined;
