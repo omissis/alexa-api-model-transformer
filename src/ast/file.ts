@@ -3,13 +3,16 @@ export class DestinationFile {
 
   readonly content: string
 
-  constructor(path: string, content: string) {
+  readonly sourceDeclaration: string
+
+  constructor(path: string, content: string, sourceDeclaration: string) {
     this.path = path
     this.content = content
+    this.sourceDeclaration = sourceDeclaration
   }
 
   static empty() {
-    return new DestinationFile('', '')
+    return new DestinationFile('', '', '')
   }
 
   isEmpty(): boolean {

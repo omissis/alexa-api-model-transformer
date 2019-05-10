@@ -6,15 +6,26 @@ import Visitor from './visitor'
 import PhpVisitor from './php/visitor'
 import ParseTool from './parse_tool'
 
+export class Options {
+  readonly declarationsBlacklist: Array<string> = []
+
+  constructor(declarationsBlacklist: Array<string>) {
+    this.declarationsBlacklist = declarationsBlacklist
+  }
+}
+
 export default class Explorer {
   private visitor: Visitor
 
-  constructor(visitor: Visitor) {
+  private options: Options
+
+  constructor(visitor: Visitor, options: Options = new Options([])) {
     this.visitor = visitor
+    this.options = options
   }
 
-  static php(parseTool: ParseTool): Explorer {
-    return new Explorer(new PhpVisitor(parseTool, 'pkg'))
+  static php(parseTool: ParseTool, options: Options): Explorer {
+    return new Explorer(new PhpVisitor(parseTool, 'pkg'), options)
   }
 
   explore(source: ts.SourceFile): Array<DestinationFile> {
@@ -26,17 +37,17 @@ export default class Explorer {
       source,
       (node: ts.Node): void => {
         if (ts.isInterfaceDeclaration(node)) {
-          files.push(self.visitor.visitInterface(node))
+          files = files.concat([this.visitor.visitInterface(node)].filter(self.filterBlacklistedFiles.bind(self)))
           return
         }
 
         if (ts.isTypeAliasDeclaration(node)) {
-          files.push(self.visitor.visitTypeAlias(node))
+          files = files.concat([this.visitor.visitTypeAlias(node)].filter(self.filterBlacklistedFiles.bind(self)))
           return
         }
 
         if (ts.isModuleDeclaration(node)) {
-          files = files.concat(self.visitor.visitModule(node))
+          files = files.concat(this.visitor.visitModule(node).filter(self.filterBlacklistedFiles.bind(self)))
           return
         }
       }
@@ -52,5 +63,10 @@ export default class Explorer {
         fs.writeFileSync(file.path, file.content)
       }
     )
+  }
+
+  private filterBlacklistedFiles(file: DestinationFile): boolean {
+    console.log(file.sourceDeclaration, this.options.declarationsBlacklist.indexOf(file.sourceDeclaration) !== -1)
+    return this.options.declarationsBlacklist.indexOf(file.sourceDeclaration) === -1
   }
 }

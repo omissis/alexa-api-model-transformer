@@ -24,9 +24,11 @@ export default class PhpVisitor implements Visitor {
     const files: Array<DestinationFile> = []
     const partialNamespace: Array<string> = []
     let curNode: ts.Node = node
+    let baseFqdn: string = ''
 
     while (ts.isModuleDeclaration(curNode)) {
       if (ts.isIdentifier(curNode.name)) {
+        baseFqdn += curNode.name.escapedText.toString() + '.'
         partialNamespace.push(str.capitalize(curNode.name.escapedText.toString()))
       }
       curNode = curNode.body
@@ -35,12 +37,12 @@ export default class PhpVisitor implements Visitor {
     if (ts.isModuleBlock(curNode)) {
       curNode.statements.forEach((statement: ts.Statement) => {
         if (ts.isInterfaceDeclaration(statement)) {
-          files.push(self.visitInterface(statement, partialNamespace.join('\\')))
+          files.push(self.visitInterface(statement, partialNamespace.join('\\'), baseFqdn))
           return
         }
 
         if (ts.isTypeAliasDeclaration(statement)) {
-          files.push(self.visitTypeAlias(statement, partialNamespace.join('\\')))
+          files.push(self.visitTypeAlias(statement, partialNamespace.join('\\'), baseFqdn))
           return
         }
       })
@@ -49,21 +51,23 @@ export default class PhpVisitor implements Visitor {
     return files.length ? files : [DestinationFile.empty()]
   }
 
-  visitInterface(node: ts.InterfaceDeclaration, namespace?: string): DestinationFile {
+  visitInterface(node: ts.InterfaceDeclaration, namespace: string = '', baseFqdn: string = ''): DestinationFile {
     const fullNamespace = this.parseTool.baseNamespace + (!!namespace ? '\\' + namespace : '')
     const namespaceDir = fullNamespace.replace(/^\\/, '').replace(/\\/g, '/')
     const template = handlebars.compile(fs.readFileSync(`${__dirname}/interface.hbs`).toString())
 
     const fileContent = template({
       namespace: fullNamespace,
-      name: node.name.escapedText,
+      name: node.name.escapedText.toString(),
       items: this.parseTool.interfaceProperties(node),
     })
 
-    return new DestinationFile(`${this.outputDir}/${namespaceDir}/${node.name.escapedText}.php`, fileContent)
+    const fqdn = (baseFqdn || '') + node.name.escapedText.toString()
+
+    return new DestinationFile(`${this.outputDir}/${namespaceDir}/${node.name.escapedText}.php`, fileContent, fqdn)
   }
 
-  visitTypeAlias(node: ts.TypeAliasDeclaration, namespace?: string): DestinationFile {
+  visitTypeAlias(node: ts.TypeAliasDeclaration, namespace: string = '', baseFqdn: string = ''): DestinationFile {
     const fullNamespace = this.parseTool.baseNamespace + (!!namespace ? '\\' + namespace : '')
     const namespaceDir = fullNamespace.replace(/^\\/, '').replace(/\\/g, '/')
     const destinationFile = (templateName: string, items: Array<string | number>): DestinationFile => {
@@ -71,11 +75,13 @@ export default class PhpVisitor implements Visitor {
 
       const fileContent = template({
         namespace: fullNamespace,
-        name: node.name.escapedText,
+        name: node.name.escapedText.toString(),
         items: items,
       })
 
-      return new DestinationFile(`${this.outputDir}/${namespaceDir}/${node.name.escapedText}.php`, fileContent)
+      const fqdn = (baseFqdn || '') + node.name.escapedText.toString()
+
+      return new DestinationFile(`${this.outputDir}/${namespaceDir}/${node.name.escapedText}.php`, fileContent, fqdn)
     }
 
     const types = this.parseTool.typeAliasTypes(node)

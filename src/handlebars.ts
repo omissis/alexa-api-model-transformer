@@ -16,7 +16,7 @@ export function registerAll(): void {
   Handlebars.registerHelper(
     'phpdocParams',
     (context): string => {
-      let items: Array<{ name: string; type: Type }> = []
+      const items: Array<{ name: string; type: Type }> = []
 
       for (let i = 0, len = (context || []).length; i < len; ++i) {
         const type: Type = context[i].type
