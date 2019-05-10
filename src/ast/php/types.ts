@@ -68,7 +68,7 @@ export class Type {
       }
     })
 
-    return new Type(typeElement.questionToken ? `?${type}` : type)
+    return new Type(typeElement.questionToken && type.length > 0 ? `?${type}` : type)
   }
 
   constructor(type: string) {
@@ -118,10 +118,10 @@ const keywordToPhpType = (keyword: string): string => {
     return 'self'
   }
 
-  if (keyword === 'TypeReference') {
-  }
+  // if (keyword === 'TypeReference') {
+  // }
 
-  return 'mixed'
+  return ''
 }
 
 const typeToNativePhpType = (type: string): string => {

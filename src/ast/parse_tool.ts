@@ -60,20 +60,33 @@ export default class ParseTool {
   }
 
   typeAliasTypes(node: ts.TypeAliasDeclaration): Array<string> {
-    if (!ts.isUnionTypeNode(node.type)) {
-      return []
-    }
-
     const self = this
 
-    return node.type.types
-      .map(
-        (type: ts.TypeNode): string => {
-          if (ts.isTypeReferenceNode(type)) {
-            return self.typeFactory.fromEntityName(type.typeName).code
+    if (ts.isUnionTypeNode(node.type)) {
+      return node.type.types
+        .map(
+          (type: ts.TypeNode): string => {
+            if (ts.isTypeReferenceNode(type)) {
+              return self.typeFactory.fromEntityName(type.typeName).code
+            }
           }
-        }
-      )
-      .filter(value => typeof value != 'undefined')
+        )
+        .filter(value => typeof value != 'undefined')
+    }
+
+    if (ts.isTypeReferenceNode(node.type)) {
+      return [self.typeFactory.fromEntityName(node.type.typeName).code]
+    }
+
+    if (ts.isLiteralTypeNode(node.type)) {
+      if (ts.isStringLiteral(node.type.literal)) {
+        return ['string']
+      }
+      if (ts.isNumericLiteral(node.type.literal)) {
+        return ['float']
+      }
+    }
+
+    return []
   }
 }

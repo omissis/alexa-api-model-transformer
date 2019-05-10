@@ -36,3 +36,6 @@ dist/**/*
 
 # Transpiled php files
 pkg/**/*
+
+/bin/
+/vendor/

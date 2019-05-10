@@ -4,8 +4,11 @@
 
 namespace Omissis\AlexaSdk\Model;
 
-final class Quux implements JsonSerializable
+final class Quux implements \JsonSerializable
 {
+    /**
+     * @var array<string>
+     */
     private const ALLOWED_TYPES = [
         \Omissis\AlexaSdk\Model\Foo\Bar\Baz1::class,
         \Omissis\AlexaSdk\Model\Foo\Bar\Baz2::class,
@@ -17,13 +20,13 @@ final class Quux implements JsonSerializable
     private $value;
 
     /**
-     * @param \Omissis\AlexaSdk\Model\Foo\Bar\Baz1|\Omissis\AlexaSdk\Model\Foo\Bar\Baz2
+     * @param \Omissis\AlexaSdk\Model\Foo\Bar\Baz1|\Omissis\AlexaSdk\Model\Foo\Bar\Baz2 $value
      */
     public function __construct($value)
     {
-        if (!in_array(get_class($value), self::ALLOWED_TYPES, true)) {
+        if (!in_array($this->getType($value), self::ALLOWED_TYPES, true)) {
             throw new \InvalidArgumentException(
-                sprintf('Value "%s" is of invalid type. Accepted types are: %s', $value, implode(',', self::ALLOWED_TYPES))
+                sprintf('Value "%s" is of invalid type. Accepted types are: %s', get_class($value), implode(',', self::ALLOWED_TYPES))
             );
         }
 
@@ -48,5 +51,13 @@ final class Quux implements JsonSerializable
         $decoded = json_decode($json);
 
         return new self($decoded);
+    }
+
+    /**
+     * @param mixed $value
+     */
+    private function getType($value): string
+    {
+        return is_object($value) ? get_class($value) : gettype($value);
     }
 }

@@ -4,7 +4,7 @@
 
 namespace Omissis\AlexaSdk\Model\Foo\Bar;
 
-final class Baz1 implements JsonSerializable
+final class Baz1 implements \JsonSerializable
 {
     /**
      * @var \Omissis\AlexaSdk\Model\Foo\Bar\Baz2

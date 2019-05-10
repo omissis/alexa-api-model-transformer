@@ -4,8 +4,11 @@
 
 namespace {{namespace}};
 
-final class {{name}} implements JsonSerializable
+final class {{name}} implements \JsonSerializable
 {
+    /**
+     * @var array<string>
+     */
     private const ALLOWED_VALUES = [
         {{#each items}}
         {{{this}}},

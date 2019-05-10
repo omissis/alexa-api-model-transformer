@@ -21,3 +21,22 @@ This project's reason for existance is to create a model for other languages' SM
 You can perform a conversion using the `yarn dump` command, and see the result being stored in the `./pkg` directory.
 
 In case you need to update the underlying Typescript model to update the ones downstream, run `yarn update alexa-apis-for-nodejs`
+
+## Todo
+
+- Improve docblocks
+- Blacklist classes
+  - services.ApiClient
+  - services.ApiConfiguration
+  - services.BaseServiceClient
+  - services.deviceAddress.DeviceAddressServiceClient
+  - services.directive.DirectiveServiceClient
+  - services.listManagement.ListManagementServiceClient
+  - services.LwaServiceClient
+  - services.monetization.MonetizationServiceClient
+  - services.proactiveEvents.ProactiveEventsServiceClient
+  - services.reminderManagement.ReminderManagementServiceClient
+  - services.ServiceClientFactory
+  - services.skillMessaging.SkillMessagingServiceClient
+  - services.ups.UpsServiceClient
+- increase Psalm level 3 issues to 'info'

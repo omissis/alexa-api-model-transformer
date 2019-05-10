@@ -4,7 +4,7 @@
 
 namespace Omissis\AlexaSdk\Model;
 
-final class FooBar implements JsonSerializable
+final class FooBar implements \JsonSerializable
 {
     /**
      * @var string

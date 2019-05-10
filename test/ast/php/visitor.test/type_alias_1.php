@@ -4,8 +4,11 @@
 
 namespace Omissis\AlexaSdk\Model;
 
-final class Baz implements JsonSerializable
+final class Baz implements \JsonSerializable
 {
+    /**
+     * @var array<string>
+     */
     private const ALLOWED_VALUES = [
         'ONE',
         'TWO',

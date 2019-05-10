@@ -16,7 +16,9 @@
     "watch": "tsc -w",
     "lint": "tslint -c tslint.json -p tsconfig.json",
     "clean": "rm -rf dist/* pkg/*",
-    "php-lint": "find pkg -type f -name *.php -exec php -l {} \\;",
+    "php-lint": "find pkg -type f -name *.php -exec php -l {} \\; && bin/phpstan analyse && bin/psalm",
+    "php-phpstan": "bin/phpstan analyse",
+    "php-psalm": "bin/psalm",
     "pretty": "prettier --write 'src/**/*.ts' 'test/**/*.ts'"
   },
   "dependencies": {},

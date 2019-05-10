@@ -34,6 +34,7 @@ export default class Explorer {
           files.push(self.visitor.visitTypeAlias(node))
           return
         }
+
         if (ts.isModuleDeclaration(node)) {
           files = files.concat(self.visitor.visitModule(node))
           return

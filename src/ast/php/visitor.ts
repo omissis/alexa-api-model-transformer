@@ -5,6 +5,7 @@ import { DestinationFile } from '../file'
 import Visitor from '../visitor'
 import handlebars from 'handlebars'
 import ParseTool from '../parse_tool'
+import * as handlebarsHelpers from '../../handlebars'
 
 export default class PhpVisitor implements Visitor {
   private parseTool: ParseTool
@@ -14,7 +15,10 @@ export default class PhpVisitor implements Visitor {
   constructor(parseTool: ParseTool, outputDir: string) {
     this.parseTool = parseTool
     this.outputDir = outputDir
+
+    handlebarsHelpers.registerAll()
   }
+
   visitModule(node: ts.ModuleDeclaration): Array<DestinationFile> {
     const self = this
     const files: Array<DestinationFile> = []

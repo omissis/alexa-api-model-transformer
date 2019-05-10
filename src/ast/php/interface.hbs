@@ -4,7 +4,7 @@
 
 namespace {{namespace}};
 
-final class {{name}} implements JsonSerializable
+final class {{name}} implements \JsonSerializable
 {
     {{#each items}}
     /**
@@ -15,10 +15,10 @@ final class {{name}} implements JsonSerializable
 
     {{/unless}}
     {{/each}}
-
+{{#unlessEmpty}}{{phpdocParams items}}{{/unlessEmpty}}
     public function __construct(
         {{#each items}}
-        {{this.type.code}} ${{this.name}}{{#unless @last}},{{/unless}}
+        {{this.type.code}}{{#if this.type.code}} {{/if}}${{this.name}}{{#unless @last}},{{/unless}}
         {{/each}}
     ) {
         {{#each items}}

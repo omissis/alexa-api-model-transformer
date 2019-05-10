@@ -1,0 +1,12 @@
+parameters:
+    reportUnmatchedIgnoredErrors: false
+    level: 7
+    paths:
+        - pkg
+    no-progress: false
+    ignoreErrors:
+        - '#Parameter\ \#1\ \$object\ of\ function\ get_class\ expects\ object\,\ string\ given\.#'
+    excludes_analyse: []
+includes: []
+
+services: []
