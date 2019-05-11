@@ -1,5 +1,6 @@
 {
-  "name": "omissis/alexa-api-model-transformer",
+  "name": "omissis/ask-sdk-model",
+  "description": "Model package for Alexa Skills Kit SDK",
   "license": "MIT",
   "authors": [
     {

@@ -25,18 +25,4 @@ In case you need to update the underlying Typescript model to update the ones do
 ## Todo
 
 - Improve docblocks
-- Blacklist classes
-  - services.ApiClient
-  - services.ApiConfiguration
-  - services.BaseServiceClient
-  - services.deviceAddress.DeviceAddressServiceClient
-  - services.directive.DirectiveServiceClient
-  - services.listManagement.ListManagementServiceClient
-  - services.LwaServiceClient
-  - services.monetization.MonetizationServiceClient
-  - services.proactiveEvents.ProactiveEventsServiceClient
-  - services.reminderManagement.ReminderManagementServiceClient
-  - services.ServiceClientFactory
-  - services.skillMessaging.SkillMessagingServiceClient
-  - services.ups.UpsServiceClient
 - increase Psalm level 3 issues to 'info'
