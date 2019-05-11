@@ -66,7 +66,6 @@ export default class Explorer {
   }
 
   private filterBlacklistedFiles(file: DestinationFile): boolean {
-    console.log(file.sourceDeclaration, this.options.declarationsBlacklist.indexOf(file.sourceDeclaration) !== -1)
     return this.options.declarationsBlacklist.indexOf(file.sourceDeclaration) === -1
   }
 }
